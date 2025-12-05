@@ -38,30 +38,24 @@ function Dashboard() {
   };
 
   const updateTaskStatus = async (taskId, newStatus) => {
-    const task = tasks.find((t) => t.id === taskId);
-    if (!task) return;
+  try {
+    await axios.patch(
+      `${API_BASE}/api/tasks/${taskId}/status`,
+      { status: newStatus },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-    try {
-      await axios.put(
-        `${API_BASE}/api/tasks/${taskId}`,
-        {
-          title: task.title,
-          description: task.description,
-          due_date: task.due_date,
-          status: newStatus,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+    // update ui 
+    setTasks(prev =>
+      prev.map(t =>
+        t.id === taskId ? { ...t, status: newStatus } : t
+      )
+    );
+  } catch (err) {
+    console.error("Status update failed:", err);
+  }
+};
 
-      setTasks((prev) =>
-        prev.map((t) =>
-          t.id === taskId ? { ...t, status: newStatus } : t
-        )
-      );
-    } catch (err) {
-      console.error("Update status failed:", err);
-    }
-  };
 
   const columns = {
     NOT_STARTED: [],
