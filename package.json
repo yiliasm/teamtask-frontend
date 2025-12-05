@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts && npm run copy-config",
+    "build": "react-scripts build && npm run copy-config",
     "copy-config": "copyfiles staticwebapp.config.json build/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
