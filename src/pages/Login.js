@@ -9,16 +9,20 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:4000/api/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://teamtaskbackend-ecepcpgpcjfwahb0.westus2-01.azurewebsites.net/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       // save JWT
       localStorage.setItem("token", res.data.token);
 
       window.location.href = "/dashboard";
     } catch (err) {
+      console.error("Login error:", err);
       alert("Invalid login");
     }
   };

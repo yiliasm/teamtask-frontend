@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_BASE = "https://teamtaskbackend-ecepcpgpcjfwahb0.westus2-01.azurewebsites.net";
+
 function Register() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -10,7 +12,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:4000/api/auth/register", {
+      await axios.post(`${API_BASE}/api/auth/register`, {
         email,
         username,
         password,
@@ -19,6 +21,7 @@ function Register() {
       alert("Registration successful!");
       window.location.href = "/";
     } catch (err) {
+      console.error("Registration error:", err);
       alert("Registration failed");
     }
   };

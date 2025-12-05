@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_BASE = "https://teamtaskbackend-ecepcpgpcjfwahb0.westus2-01.azurewebsites.net";
+
 function TaskForm({ onTaskCreated }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -17,7 +19,7 @@ function TaskForm({ onTaskCreated }) {
       return;
     }
 
-    // handle jwt's
+    // decode JWT
     let payload = null;
     try {
       payload = JSON.parse(atob(token.split(".")[1]));
@@ -31,7 +33,7 @@ function TaskForm({ onTaskCreated }) {
 
     try {
       await axios.post(
-        "http://localhost:4000/api/tasks",
+        `${API_BASE}/api/tasks`,
         {
           title,
           description,
@@ -48,7 +50,7 @@ function TaskForm({ onTaskCreated }) {
       setDescription("");
       setDueDate("");
 
-      onTaskCreated(); // rrefresh tasks
+      onTaskCreated(); // refresh tasks after creation
 
     } catch (err) {
       console.error("Task creation error:", err);

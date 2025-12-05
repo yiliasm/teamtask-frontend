@@ -3,6 +3,8 @@ import axios from "axios";
 import TaskForm from "../components/TaskForm";
 import "./Dashboard.css";
 
+const API_BASE = "https://teamtaskbackend-ecepcpgpcjfwahb0.westus2-01.azurewebsites.net";
+
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [userId, setUserId] = useState(null);
@@ -26,7 +28,7 @@ function Dashboard() {
 
   const fetchTasks = async (id, jwtToken) => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/tasks/${id}`, {
+      const res = await axios.get(`${API_BASE}/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${jwtToken}` },
       });
       setTasks(res.data);
@@ -41,7 +43,7 @@ function Dashboard() {
 
     try {
       await axios.put(
-        `http://localhost:4000/api/tasks/${taskId}`,
+        `${API_BASE}/api/tasks/${taskId}`,
         {
           title: task.title,
           description: task.description,
@@ -91,9 +93,11 @@ function Dashboard() {
             {items.map((task) => (
               <div key={task.id} className="task-card">
                 <div className="task-title">{task.title}</div>
+
                 {task.description && (
                   <div className="task-desc">{task.description}</div>
                 )}
+
                 <div className="task-date">
                   Due: {formatDate(task.due_date)}
                 </div>
@@ -101,27 +105,21 @@ function Dashboard() {
                 <div className="status-buttons">
                   <button
                     className="status-button status-notstarted"
-                    onClick={() =>
-                      updateTaskStatus(task.id, "NOT_STARTED")
-                    }
+                    onClick={() => updateTaskStatus(task.id, "NOT_STARTED")}
                   >
                     To Do
                   </button>
 
                   <button
                     className="status-button status-inprogress"
-                    onClick={() =>
-                      updateTaskStatus(task.id, "IN_PROGRESS")
-                    }
+                    onClick={() => updateTaskStatus(task.id, "IN_PROGRESS")}
                   >
                     Progress
                   </button>
 
                   <button
                     className="status-button status-completed"
-                    onClick={() =>
-                      updateTaskStatus(task.id, "COMPLETED")
-                    }
+                    onClick={() => updateTaskStatus(task.id, "COMPLETED")}
                   >
                     Done
                   </button>
